@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
 
+# don't forget to clear the cache to fallback to default behavior
 if (DEFINED CMAKE_GENGINE_PATH)
     include(cmake/custom-gengine.cmake)
 else()
@@ -31,3 +32,18 @@ endif()
 
 target_compile_definitions(hs_server PRIVATE GEngine_Server)
 target_compile_definitions(hs_client PRIVATE GEngine_Client)
+
+## Install ##
+
+# This is mostly for the CD pipeline, it uses the VCPKG installed Gengine
+if (CMAKE_BUILD_TYPE STREQUAL "Release" AND NOT DEFINED CMAKE_GENGINE_PATH)
+    install(TARGETS hs_server hs_client
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+    )
+
+    install(DIRECTORY assets/ DESTINATION assets)
+
+    include(cmake/pack.cmake)
+endif()
