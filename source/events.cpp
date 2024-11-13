@@ -12,17 +12,18 @@
 
 #include "events/Movement.hpp"
 
-void GEngineDeclareEvents(Registry *r) {
+void GEngineDeclareEvents(Registry *r)
+{
     // r->registerSystem<
     //     gengine::interface::network::system::ClientEventPublisher<
-    //         poc3d::event::Movement,
-    //         poc3d::event::Shoot
+    //         hs::event::Movement,
+    //         hs::event::Shoot
     //     >
     // >();
     // r->registerSystem<
     //     gengine::interface::network::system::ServerEventReceiver<
-    //         poc3d::event::Movement,
-    //         poc3d::event::Shoot
+    //         hs::event::Movement,
+    //         hs::event::Shoot
     //     >
     // >();
 }

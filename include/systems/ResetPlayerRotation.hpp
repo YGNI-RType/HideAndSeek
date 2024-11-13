@@ -19,12 +19,14 @@
 
 #include "events/ResetPlayerRotationEvent.hpp"
 
-namespace poc3d::system {
-class ResetPlayerRotation : public gengine::System<ResetPlayerRotation, gengine::interface::component::RemoteLocal,
-                                                   gengine::component::driver::output::Model, component::Player,
-                                                   geg::component::Transform3D> {
-public:
-    void init(void) override;
-    void resetPlayerRotation(gengine::interface::event::SharedEvent<event::ResetPlayerRotationEvent> &e);
-};
-} // namespace poc3d::system
+namespace hs::system
+{
+    class ResetPlayerRotation : public gengine::System<ResetPlayerRotation, gengine::interface::component::RemoteLocal,
+                                                       gengine::component::driver::output::Model, component::Player,
+                                                       geg::component::Transform3D>
+    {
+    public:
+        void init(void) override;
+        void resetPlayerRotation(gengine::interface::event::SharedEvent<event::ResetPlayerRotationEvent> &e);
+    };
+} // namespace hs::system

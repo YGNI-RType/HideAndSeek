@@ -12,17 +12,19 @@
 #include "GEngine/libdev/System.hpp"
 #include "GEngine/libdev/Systems.hpp"
 
-namespace poc3d::system {
-class Start : public gengine::System<Start, gengine::system::driver::output::TextureManager,
-                                     gengine::interface::component::RemoteLocal>,
-              public gengine::RemoteSystem {
-public:
-    void init(void) override;
-    void onStartEngine(gengine::system::event::StartEngine &);
-    void onNewRemoteLocal(gengine::interface::event::NewRemoteLocal &);
-    void onDeleteRemoteLocal(gengine::interface::event::DeleteRemoteLocal &e);
+namespace hs::system
+{
+    class Start : public gengine::System<Start, gengine::system::driver::output::TextureManager,
+                                         gengine::interface::component::RemoteLocal>,
+                  public gengine::RemoteSystem
+    {
+    public:
+        void init(void) override;
+        void onStartEngine(gengine::system::event::StartEngine &);
+        void onNewRemoteLocal(gengine::interface::event::NewRemoteLocal &);
+        void onDeleteRemoteLocal(gengine::interface::event::DeleteRemoteLocal &e);
 
-private:
-    size_t m_nbPlayer = 0;
-};
-} // namespace poc3d::system
+    private:
+        size_t m_nbPlayer = 0;
+    };
+} // namespace hs::system

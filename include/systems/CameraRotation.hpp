@@ -29,21 +29,23 @@
 
 #include "Constants.hpp"
 
-namespace poc3d::system {
-class CameraRotation
-    : public gengine::System<CameraRotation, gengine::interface::component::RemoteLocal, gengine::component::Velocity3D,
-                             gengine::component::driver::output::Model, component::Player, geg::component::Transform3D,
-                             gengine::system::driver::output::DrawModel>,
-      public gengine::LocalSystem {
-public:
-    void init(void) override;
-    void onStart(gengine::system::event::StartEngine &e);
-    void onMovement(gengine::interface::event::SharedEvent<event::Movement> &e);
-    void rotateCamera(event::Rotation &e);
-    void resetPlayerRotation(event::ResetPlayerRotationCameraEvent &e);
+namespace hs::system
+{
+    class CameraRotation
+        : public gengine::System<CameraRotation, gengine::interface::component::RemoteLocal, gengine::component::Velocity3D,
+                                 gengine::component::driver::output::Model, component::Player, geg::component::Transform3D,
+                                 gengine::system::driver::output::DrawModel>,
+          public gengine::LocalSystem
+    {
+    public:
+        void init(void) override;
+        void onStart(gengine::system::event::StartEngine &e);
+        void onMovement(gengine::interface::event::SharedEvent<event::Movement> &e);
+        void rotateCamera(event::Rotation &e);
+        void resetPlayerRotation(event::ResetPlayerRotationCameraEvent &e);
 
-private:
-    void moveCamera(geg::component::Transform3D &transform, gengine::Vect3 &forward);
-    gengine::Entity m_cameraId;
-};
-} // namespace poc3d::system
+    private:
+        void moveCamera(geg::component::Transform3D &transform, gengine::Vect3 &forward);
+        gengine::Entity m_cameraId;
+    };
+} // namespace hs::system

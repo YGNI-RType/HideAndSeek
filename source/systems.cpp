@@ -48,13 +48,16 @@
 
 #include "GEngine/libdev/System.hpp"
 
-struct V : public gengine::System<V>, public gengine::LocalSystem {
-    void init(void) override {
+struct V : public gengine::System<V>, public gengine::LocalSystem
+{
+    void init(void) override
+    {
         // publishEvent(gengine::system::event::driver::input::StartVoIP());
         subscribeToEvent<gengine::system::event::CLINewInput>(&V::onCLi);
     }
 
-    void onCLi(gengine::system::event::CLINewInput &e) {
+    void onCLi(gengine::system::event::CLINewInput &e)
+    {
         if (!e.prompt.size())
             return;
         if (!e.prompt[0].compare("voip-start"))
@@ -64,7 +67,8 @@ struct V : public gengine::System<V>, public gengine::LocalSystem {
     }
 };
 
-void GEngineDeclareSystems(Registry *r) {
+void GEngineDeclareSystems(Registry *r)
+{
     r->registerSystem<gengine::system::driver::output::RenderWindow>(WINDOW_WIDTH, WINDOW_TOTAL_HEIGHT, "R-Type");
     r->registerSystem<gengine::system::driver::output::Draw>(BLACK);
     r->registerSystem<gengine::system::driver::output::DrawSprite>();
@@ -88,29 +92,29 @@ void GEngineDeclareSystems(Registry *r) {
     r->registerSystem<gengine::system::Collision2D>();
     r->registerSystem<gengine::system::AutoKiller>();
 
-    r->registerSystem<poc3d::system::Crossair>();
+    r->registerSystem<hs::system::Crossair>();
 
-    r->registerSystem<poc3d::system::InputsToGameEvents>();
-    r->registerSystem<poc3d::system::Start>();
-    r->registerSystem<poc3d::system::BackgroundMotion>();
-    r->registerSystem<poc3d::system::PlayerMotion>();
-    r->registerSystem<poc3d::system::CameraRotation>();
-    r->registerSystem<poc3d::system::ResetPlayerRotation>();
-    r->registerSystem<poc3d::system::ChangePlayerModel>();
-    r->registerSystem<poc3d::system::Guess>();
-    r->registerSystem<poc3d::system::MorphToProp>();
+    r->registerSystem<hs::system::InputsToGameEvents>();
+    r->registerSystem<hs::system::Start>();
+    r->registerSystem<hs::system::BackgroundMotion>();
+    r->registerSystem<hs::system::PlayerMotion>();
+    r->registerSystem<hs::system::CameraRotation>();
+    r->registerSystem<hs::system::ResetPlayerRotation>();
+    r->registerSystem<hs::system::ChangePlayerModel>();
+    r->registerSystem<hs::system::Guess>();
+    r->registerSystem<hs::system::MorphToProp>();
 
     r->registerSystem<gengine::interface::system::HandleRemoteLocal>();
     r->registerSystem<gengine::interface::system::HandleLocal>();
 
     r->registerSystem<gengine::interface::network::system::ClientEventPublisher<
-        poc3d::event::Movement, poc3d::event::Rotation, poc3d::event::Jump, poc3d::event::ChangeCameraMode,
-        poc3d::event::ChangePlayerModelEvent, poc3d::event::ResetPlayerRotationEvent, poc3d::event::LockPlayerEvent,
-        poc3d::event::Sprint, poc3d::event::Crouch, gengine::interface::event::GetRemoteLocalWhoIAm>>();
+        hs::event::Movement, hs::event::Rotation, hs::event::Jump, hs::event::ChangeCameraMode,
+        hs::event::ChangePlayerModelEvent, hs::event::ResetPlayerRotationEvent, hs::event::LockPlayerEvent,
+        hs::event::Sprint, hs::event::Crouch, gengine::interface::event::GetRemoteLocalWhoIAm>>();
     r->registerSystem<gengine::interface::network::system::ServerEventReceiver<
-        poc3d::event::Movement, poc3d::event::Rotation, poc3d::event::Jump, poc3d::event::ChangeCameraMode,
-        poc3d::event::ChangePlayerModelEvent, poc3d::event::ResetPlayerRotationEvent, poc3d::event::LockPlayerEvent,
-        poc3d::event::Sprint, poc3d::event::Crouch, gengine::interface::event::GetRemoteLocalWhoIAm>>();
+        hs::event::Movement, hs::event::Rotation, hs::event::Jump, hs::event::ChangeCameraMode,
+        hs::event::ChangePlayerModelEvent, hs::event::ResetPlayerRotationEvent, hs::event::LockPlayerEvent,
+        hs::event::Sprint, hs::event::Crouch, gengine::interface::event::GetRemoteLocalWhoIAm>>();
 
     r->registerSystem<gengine::interface::network::system::ConnectAtStart>("127.0.0.1", 4242);
 

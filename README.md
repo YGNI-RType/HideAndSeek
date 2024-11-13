@@ -1,6 +1,6 @@
-# Prophunt Game
+# Hide'n'Seek game
 
-Welcome to **Prophunt**! This game was built with **GEngine**, a custom game engine powered by an **Entity Component System (ECS)** architecture, designed for efficient and modular game development.
+Welcome to **Hide and Seek**! This game was built with **GEngine**, a custom game engine powered by an **Entity Component System (ECS)** architecture, designed for efficient and modular game development.
 
 ## Features
 

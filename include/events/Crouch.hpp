@@ -9,12 +9,15 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace poc3d::event {
-struct Crouch : public gengine::Event {
-    bool crouching;
+namespace hs::event
+{
+    struct Crouch : public gengine::Event
+    {
+        bool crouching;
 
-    Crouch(bool crouching = false)
-        : crouching(crouching) {
-    }
-};
-} // namespace poc3d::event
+        Crouch(bool crouching = false)
+            : crouching(crouching)
+        {
+        }
+    };
+} // namespace hs::event

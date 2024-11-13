@@ -25,20 +25,22 @@
 
 #include "events/GuessEvent.hpp"
 
-namespace poc3d::system {
-class Guess
-    : public gengine::System<Guess, gengine::interface::component::RemoteLocal, geg::component::io::Animation,
-                             gengine::component::driver::output::Model, geg::component::Transform3D, component::Player,
-                             gengine::system::driver::output::DrawModel, gengine::system::driver::output::ModelManager,
-                             gengine::system::driver::output::RenderWindow>,
-      public gengine::LocalSystem {
-public:
-    void init(void) override;
+namespace hs::system
+{
+    class Guess
+        : public gengine::System<Guess, gengine::interface::component::RemoteLocal, geg::component::io::Animation,
+                                 gengine::component::driver::output::Model, geg::component::Transform3D, component::Player,
+                                 gengine::system::driver::output::DrawModel, gengine::system::driver::output::ModelManager,
+                                 gengine::system::driver::output::RenderWindow>,
+          public gengine::LocalSystem
+    {
+    public:
+        void init(void) override;
 
-    void guessWho(event::GuessEvent &e);
-    void setMe(gengine::interface::event::ItsMe &e);
+        void guessWho(event::GuessEvent &e);
+        void setMe(gengine::interface::event::ItsMe &e);
 
-private:
-    uuids::uuid m_me;
-};
-} // namespace poc3d::system
+    private:
+        uuids::uuid m_me;
+    };
+} // namespace hs::system

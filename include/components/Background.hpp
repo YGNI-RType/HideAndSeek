@@ -11,12 +11,15 @@
 
 #define DEFAULT_BACKGROUND_SPEED 3
 
-namespace poc3d::component {
-struct Background : public gengine::Component<Background> {
-    float speed;
+namespace hs::component
+{
+    struct Background : public gengine::Component<Background>
+    {
+        float speed;
 
-    Background(float newSpeed = DEFAULT_BACKGROUND_SPEED)
-        : speed(newSpeed) {
-    }
-};
-} // namespace poc3d::component
+        Background(float newSpeed = DEFAULT_BACKGROUND_SPEED)
+            : speed(newSpeed)
+        {
+        }
+    };
+} // namespace hs::component

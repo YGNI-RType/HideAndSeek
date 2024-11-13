@@ -9,12 +9,15 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace poc3d::event {
-struct Rotation : public gengine::Event {
-    gengine::Vect3 move = {0, 0, 0};
+namespace hs::event
+{
+    struct Rotation : public gengine::Event
+    {
+        gengine::Vect3 move = {0, 0, 0};
 
-    Rotation(gengine::Vect3 move)
-        : move(move) {
-    }
-};
-} // namespace poc3d::event
+        Rotation(gengine::Vect3 move)
+            : move(move)
+        {
+        }
+    };
+} // namespace hs::event

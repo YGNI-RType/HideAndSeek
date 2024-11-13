@@ -9,6 +9,9 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace poc3d::event {
-struct ChangeCameraMode : public gengine::Event {};
-} // namespace poc3d::event
+namespace hs::event
+{
+    struct ChangeCameraMode : public gengine::Event
+    {
+    };
+} // namespace hs::event

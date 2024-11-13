@@ -11,22 +11,25 @@
 
 #define DEFAULT_SPEED 0.06
 
-namespace poc3d::component {
-enum class PlayerState {
-    WALKING,
-    RUNNING,
-    IDLING,
-};
-struct Player : public gengine::Component<Player> {
-    float speed;
-    float defaultSpeed;
-    bool sprinting = false;
-    bool isLocked = false;
+namespace hs::component
+{
+    enum class PlayerState
+    {
+        WALKING,
+        RUNNING,
+        IDLING,
+    };
+    struct Player : public gengine::Component<Player>
+    {
+        float speed;
+        float defaultSpeed;
+        bool sprinting = false;
+        bool isLocked = false;
 
-    Player(float defaultSpeed = DEFAULT_SPEED)
-        : speed(defaultSpeed)
-        , defaultSpeed(defaultSpeed) {
-    }
-};
+        Player(float defaultSpeed = DEFAULT_SPEED)
+            : speed(defaultSpeed), defaultSpeed(defaultSpeed)
+        {
+        }
+    };
 
-} // namespace poc3d::component
+} // namespace hs::component

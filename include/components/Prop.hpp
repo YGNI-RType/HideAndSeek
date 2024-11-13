@@ -9,7 +9,10 @@
 
 #include "GEngine/libdev/Component.hpp"
 
-namespace poc3d::component {
-struct Prop : public gengine::Component<Prop> {};
+namespace hs::component
+{
+    struct Prop : public gengine::Component<Prop>
+    {
+    };
 
-} // namespace poc3d::component
+} // namespace hs::component

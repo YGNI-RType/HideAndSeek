@@ -9,6 +9,9 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace poc3d::event {
-struct ResetPlayerRotationCameraEvent : public gengine::Event {};
-} // namespace poc3d::event
+namespace hs::event
+{
+    struct ResetPlayerRotationCameraEvent : public gengine::Event
+    {
+    };
+} // namespace hs::event

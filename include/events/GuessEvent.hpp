@@ -9,12 +9,15 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace poc3d::event {
-struct GuessEvent : public gengine::Event {
-    float strength;
+namespace hs::event
+{
+    struct GuessEvent : public gengine::Event
+    {
+        float strength;
 
-    GuessEvent(float strength = 0.1)
-        : strength(strength) {
-    }
-};
-} // namespace poc3d::event
+        GuessEvent(float strength = 0.1)
+            : strength(strength)
+        {
+        }
+    };
+} // namespace hs::event

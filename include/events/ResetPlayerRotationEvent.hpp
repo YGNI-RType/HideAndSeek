@@ -9,12 +9,15 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace poc3d::event {
-struct ResetPlayerRotationEvent : public gengine::Event {
-    float rotation;
+namespace hs::event
+{
+    struct ResetPlayerRotationEvent : public gengine::Event
+    {
+        float rotation;
 
-    ResetPlayerRotationEvent(float rotation)
-        : rotation(rotation) {
-    }
-};
-} // namespace poc3d::event
+        ResetPlayerRotationEvent(float rotation)
+            : rotation(rotation)
+        {
+        }
+    };
+} // namespace hs::event

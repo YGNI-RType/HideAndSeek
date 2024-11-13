@@ -15,7 +15,8 @@
 
 #include "GEngine/interface/components/RemoteLocal.hpp"
 
-void GEngineDeclareComponents(Registry *r) {
+void GEngineDeclareComponents(Registry *r)
+{
     r->registerComponent<geg::component::HitBoxSquare2D>();
     r->registerComponent<geg::component::HitBoxCircle2D>();
     r->registerComponent<geg::component::SpanLife>();
@@ -32,9 +33,9 @@ void GEngineDeclareComponents(Registry *r) {
     r->registerComponent<geg::component::io::Rectangle>();
     r->registerComponent<geg::component::io::Circle>();
 
-    r->registerComponent<poc3d::component::Player>();
-    r->registerComponent<poc3d::component::Prop>();
-    r->registerComponent<poc3d::component::Background>();
+    r->registerComponent<hs::component::Player>();
+    r->registerComponent<hs::component::Prop>();
+    r->registerComponent<hs::component::Background>();
 
     r->registerComponent<gengine::interface::component::RemoteLocal>();
     r->registerComponent<geg::component::network::NetSend>();
