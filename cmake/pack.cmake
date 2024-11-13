@@ -1,4 +1,3 @@
-
 ## Package Information ##
 
 set(CPACK_PACKAGE_NAME "HideAndSeek")
@@ -8,18 +7,6 @@ set(CPACK_PACKAGE_VENDOR "YGNI-RType")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 
-## Package Type ##
-
-if (WIN32)
-    set(CPACK_GENERATOR "NSIS")
-elseif (APPLE)
-    set(CPACK_GENERATOR "Bundle")
-elseif (UNIX)
-    set(CPACK_GENERATOR "TGZ")
-endif()
-
-set(CPACK_SOURCE_GENERATOR "ZIP;TGZ")
-
 ## Libs ##
 
 if (WIN32)
@@ -27,13 +14,36 @@ if (WIN32)
     file(GLOB VCPKG_SHARED_LIBS "${VCPKG_LIB_DIR}/*.dll")
 elseif (APPLE)
     set(VCPKG_LIB_DIR ${VCPKG_ROOT}/installed/${VCPKG_TRIPLET}/lib)
-    file(GLOB VCPKG_SHARED_LIBS "${VCPKG_LIB_DIR}/*.dylib")
+    file(GLOB VCPKG_SHARED_LIBS_SYMLINKS "${VCPKG_LIB_DIR}/*.dylib")
+    foreach(SYMLINK ${VCPKG_SHARED_LIBS_SYMLINKS})
+        get_filename_component(REALPATH ${SYMLINK} REALPATH)
+        list(APPEND VCPKG_SHARED_LIBS ${REALPATH})
+    endforeach()
 else()
     set(VCPKG_LIB_DIR ${VCPKG_ROOT}/installed/${VCPKG_TRIPLET}/lib)
-    file(GLOB VCPKG_SHARED_LIBS "${VCPKG_LIB_DIR}/*.so")
+    file(GLOB VCPKG_SHARED_LIBS_SYMLINKS "${VCPKG_LIB_DIR}/*.so")
+    foreach(SYMLINK ${VCPKG_SHARED_LIBS_SYMLINKS})
+        get_filename_component(REALPATH ${SYMLINK} REALPATH)
+        list(APPEND VCPKG_SHARED_LIBS ${REALPATH})
+    endforeach()
 endif()
 
 install(FILES ${VCPKG_SHARED_LIBS} DESTINATION bin)
+
+## Package Type ##
+
+if (WIN32)
+    set(CPACK_GENERATOR "NSIS")
+    set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
+    set(CPACK_NSIS_PACKAGE_NAME "${CPACK_PACKAGE_NAME}")
+    set(CPACK_NSIS_BRANDING_TEXT "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
+elseif (APPLE)
+    set(CPACK_GENERATOR "Bundle")
+elseif (UNIX)
+    set(CPACK_GENERATOR "TGZ")
+endif()
+
+set(CPACK_SOURCE_GENERATOR "ZIP;TGZ")
 
 ##########
 

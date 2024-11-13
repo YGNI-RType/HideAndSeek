@@ -43,6 +43,10 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release" AND NOT DEFINED CMAKE_GENGINE_PATH)
         ARCHIVE DESTINATION bin
     )
 
+    if(UNIX)
+        set_target_properties(hs_server hs_client PROPERTIES INSTALL_RPATH "$ORIGIN")
+    endif()
+
     install(DIRECTORY assets/ DESTINATION assets)
 
     include(cmake/pack.cmake)
