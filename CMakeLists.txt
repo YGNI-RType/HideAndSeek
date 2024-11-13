@@ -39,8 +39,8 @@ target_compile_definitions(hs_client PRIVATE GEngine_Client)
 if (CMAKE_BUILD_TYPE STREQUAL "Release" AND NOT DEFINED CMAKE_GENGINE_PATH)
     install(TARGETS hs_server hs_client
         RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION bin
+        ARCHIVE DESTINATION bin
     )
 
     install(DIRECTORY assets/ DESTINATION assets)

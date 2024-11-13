@@ -33,7 +33,7 @@ else()
     file(GLOB VCPKG_SHARED_LIBS "${VCPKG_LIB_DIR}/*.so")
 endif()
 
-install(FILES ${VCPKG_SHARED_LIBS} DESTINATION lib)
+install(FILES ${VCPKG_SHARED_LIBS} DESTINATION bin)
 
 ##########
 

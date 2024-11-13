@@ -69,7 +69,7 @@ struct V : public gengine::System<V>, public gengine::LocalSystem
 
 void GEngineDeclareSystems(Registry *r)
 {
-    r->registerSystem<gengine::system::driver::output::RenderWindow>(WINDOW_WIDTH, WINDOW_TOTAL_HEIGHT, "R-Type");
+    r->registerSystem<gengine::system::driver::output::RenderWindow>(WINDOW_WIDTH, WINDOW_TOTAL_HEIGHT, "HideAndSeek");
     r->registerSystem<gengine::system::driver::output::Draw>(BLACK);
     r->registerSystem<gengine::system::driver::output::DrawSprite>();
     r->registerSystem<gengine::system::driver::output::DrawModel>();
