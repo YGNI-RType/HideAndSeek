@@ -15,8 +15,7 @@
 
 #include "GEngine/interface/components/RemoteLocal.hpp"
 
-void GEngineDeclareComponents(Registry *r)
-{
+void GEngineDeclareComponents(Registry *r) {
     r->registerComponent<geg::component::HitBoxSquare2D>();
     r->registerComponent<geg::component::HitBoxCircle2D>();
     r->registerComponent<geg::component::SpanLife>();

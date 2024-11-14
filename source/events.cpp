@@ -12,8 +12,7 @@
 
 #include "events/Movement.hpp"
 
-void GEngineDeclareEvents(Registry *r)
-{
+void GEngineDeclareEvents(Registry *r) {
     // r->registerSystem<
     //     gengine::interface::network::system::ClientEventPublisher<
     //         hs::event::Movement,
