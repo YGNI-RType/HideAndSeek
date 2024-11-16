@@ -77,6 +77,17 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -S ${{ github.workspace }}
 
+        # Since metadata is not cached, we need to reconfigure cmake but without triggering a vcpkg pull
+      - name: Configure CMake CACHED
+        if: steps.cache-build.outputs.cache-hit == 'true'
+        run: >
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DVCPKG_SHOULD_NOT_UPDATE=TRUE
+          -S ${{ github.workspace }}
+
       - name: Build
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
@@ -90,7 +101,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           cmake --build ${{ steps.strings.outputs.build-output-dir }} --target clean
-          Remove-Item -Path build/vcpkg/* -Exclude 'downloads', 'installed', 'scripts', 'triplets' -Recurse -Force
+          Get-ChildItem -Path build/vcpkg/* -Exclude 'downloads', 'installed', 'scripts', 'triplets' | Remove-Item -Recurse -Force
 
       - name: Clean the cmake build directory UNIX like
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
