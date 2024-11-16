@@ -64,7 +64,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: build
-          key: ${{ runner.os }}-build-${{ hashFiles('CMakeLists.txt', '**/CMakeLists.txt') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('CMakeLists.txt', 'cmake/**', 'overlay-ports/gengine/portfile.cmake') }}
           restore-keys: |
             ${{ runner.os }}-build-
 
@@ -83,6 +83,12 @@ jobs:
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: ctest --build-config ${{ matrix.build_type }}
+
+      - name: Clean the cmake build directory
+        # the cache is mainly for cmake, and the timestamps don't match anyway. maybe next time we'll use another cache handler
+        run: |
+          cmake --build ${{ steps.strings.outputs.build-output-dir }} --target clean
+          && find build/.vcpkg -mindepth 1 -maxdepth 1 ! -name 'downloads' ! -name 'installed' ! -name 'scripts' ! -name 'triplets' -exec rm -rf {} +
 
   cleanup:
     runs-on: ubuntu-latest
