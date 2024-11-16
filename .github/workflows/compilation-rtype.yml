@@ -84,11 +84,19 @@ jobs:
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: ctest --build-config ${{ matrix.build_type }}
 
-      - name: Clean the cmake build directory
         # the cache is mainly for cmake, and the timestamps don't match anyway. maybe next time we'll use another cache handler
+
+      - name: Clean the cmake build directory Windows
+        if: matrix.os == 'windows-latest'
         run: |
           cmake --build ${{ steps.strings.outputs.build-output-dir }} --target clean
-          && find build/.vcpkg -mindepth 1 -maxdepth 1 ! -name 'downloads' ! -name 'installed' ! -name 'scripts' ! -name 'triplets' -exec rm -rf {} +
+          Remove-Item -Path build/vcpkg/* -Exclude 'downloads', 'installed', 'scripts', 'triplets' -Recurse -Force
+
+      - name: Clean the cmake build directory UNIX like
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        run: |
+          cmake --build ${{ steps.strings.outputs.build-output-dir }} --target clean
+          find build/.vcpkg -mindepth 1 -maxdepth 1 ! -name 'downloads' ! -name 'installed' ! -name 'scripts' ! -name 'triplets' -exec rm -rf {} +
 
   cleanup:
     runs-on: ubuntu-latest
