@@ -4,19 +4,16 @@ on:
   push:
     branches: ["dev", "devops"]
     tags:
-      - '*'
+      - "*"
   pull_request:
     branches: ["main", "dev"]
 
 jobs:
   build_rtype:
     runs-on: ${{ matrix.os }}
-    env:
-      IS_RELEASE: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/devops' || startsWith(github.ref, 'refs/tags/') }}
 
     strategy:
-      #TODO Consider changing this to true when your workflow is stable.
-      fail-fast: false
+      fail-fast: true
 
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -100,15 +97,15 @@ jobs:
         run: ctest --build-config ${{ matrix.build_type }}
 
       - name: Install NSIS on Windows
-        if: (matrix.os == 'windows-latest') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/devops')
+        if: ((github.ref == 'refs/heads/devops') || startsWith(github.ref, 'refs/tags/')) && (matrix.os == 'windows-latest')
         run: choco install nsis -y
 
       - name: Build with CPack
-        if: ${{ env.IS_RELEASE }}
+        if: (github.ref == 'refs/heads/devops') || startsWith(github.ref, 'refs/tags/')
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target package
 
       - name: Upload CPack artifacts
-        if: ${{ env.IS_RELEASE }}
+        if: (github.ref == 'refs/heads/devops') || startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-artifacts
@@ -166,8 +163,8 @@ jobs:
           clang-format -Werror -dry-run $files
 
   publish:
-    if: (github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'v')) || (github.ref == 'refs/heads/devops') || startsWith(github.ref, 'refs/tags/')
-    needs: build_rtype
+    if: (github.ref == 'refs/heads/devops') || startsWith(github.ref, 'refs/tags/')
+    needs: [build_rtype, beautify]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
