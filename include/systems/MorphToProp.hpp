@@ -24,18 +24,16 @@
 
 #include "events/MorphToPropEvent.hpp"
 
-namespace hs::system
-{
-    class MorphToProp
-        : public gengine::System<
-              MorphToProp, gengine::interface::component::RemoteLocal, gengine::component::driver::output::Model,
-              geg::component::Transform3D, component::Player, component::Prop, gengine::system::driver::output::DrawModel,
-              gengine::system::driver::output::ModelManager, gengine::system::driver::output::RenderWindow>,
-          public gengine::LocalSystem
-    {
-    public:
-        void init(void) override;
+namespace hs::system {
+class MorphToProp
+    : public gengine::System<
+          MorphToProp, gengine::interface::component::RemoteLocal, gengine::component::driver::output::Model,
+          geg::component::Transform3D, component::Player, component::Prop, gengine::system::driver::output::DrawModel,
+          gengine::system::driver::output::ModelManager, gengine::system::driver::output::RenderWindow>,
+      public gengine::LocalSystem {
+public:
+    void init(void) override;
 
-        void morphPlayer(event::MorphToPropEvent &e);
-    };
+    void morphPlayer(event::MorphToPropEvent &e);
+};
 } // namespace hs::system

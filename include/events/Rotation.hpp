@@ -9,15 +9,12 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace hs::event
-{
-    struct Rotation : public gengine::Event
-    {
-        gengine::Vect3 move = {0, 0, 0};
+namespace hs::event {
+struct Rotation : public gengine::Event {
+    gengine::Vect3 move = {0, 0, 0};
 
-        Rotation(gengine::Vect3 move)
-            : move(move)
-        {
-        }
-    };
+    Rotation(gengine::Vect3 move)
+        : move(move) {
+    }
+};
 } // namespace hs::event

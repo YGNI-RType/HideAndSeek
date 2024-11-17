@@ -9,10 +9,7 @@
 
 #include "GEngine/libdev/Component.hpp"
 
-namespace hs::component
-{
-    struct Prop : public gengine::Component<Prop>
-    {
-    };
+namespace hs::component {
+struct Prop : public gengine::Component<Prop> {};
 
 } // namespace hs::component

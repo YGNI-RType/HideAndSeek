@@ -14,14 +14,12 @@
 
 #include "components/Background.hpp"
 
-namespace hs::system
-{
-    class BackgroundMotion : public gengine::System<BackgroundMotion, gengine::component::Velocity2D,
-                                                    gengine::component::Transform2D, component::Background>
-    {
-    public:
-        void init(void) override;
-        void onGameLoop(gengine::system::event::GameLoop &);
-        void updateBackgroundSpeed(void);
-    };
+namespace hs::system {
+class BackgroundMotion : public gengine::System<BackgroundMotion, gengine::component::Velocity2D,
+                                                gengine::component::Transform2D, component::Background> {
+public:
+    void init(void) override;
+    void onGameLoop(gengine::system::event::GameLoop &);
+    void updateBackgroundSpeed(void);
+};
 } // namespace hs::system

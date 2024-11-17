@@ -17,26 +17,22 @@
 
 #include "GEngine/libdev/tools/Raylib.hpp"
 
-namespace hs::system
-{
-    void ResetPlayerRotation::init(void)
-    {
-        subscribeToEvent<gengine::interface::event::SharedEvent<event::ResetPlayerRotationEvent>>(
-            &ResetPlayerRotation::resetPlayerRotation);
-    }
+namespace hs::system {
+void ResetPlayerRotation::init(void) {
+    subscribeToEvent<gengine::interface::event::SharedEvent<event::ResetPlayerRotationEvent>>(
+        &ResetPlayerRotation::resetPlayerRotation);
+}
 
-    void ResetPlayerRotation::resetPlayerRotation(
-        gengine::interface::event::SharedEvent<event::ResetPlayerRotationEvent> &e)
-    {
-        auto &transforms = getComponents<geg::component::Transform3D>();
-        auto &players = getComponents<component::Player>();
-        auto &remotes = getComponents<gengine::interface::component::RemoteLocal>();
+void ResetPlayerRotation::resetPlayerRotation(
+    gengine::interface::event::SharedEvent<event::ResetPlayerRotationEvent> &e) {
+    auto &transforms = getComponents<geg::component::Transform3D>();
+    auto &players = getComponents<component::Player>();
+    auto &remotes = getComponents<gengine::interface::component::RemoteLocal>();
 
-        for (auto [entity, remote, player, transform] : gengine::Zip(remotes, players, transforms))
-        {
-            if (remote.getUUIDBytes() != e.remoteUUID) // check if its the same remote (zip)
-                continue;
-            transform.rotation.y = e->rotation;
-        }
+    for (auto [entity, remote, player, transform] : gengine::Zip(remotes, players, transforms)) {
+        if (remote.getUUIDBytes() != e.remoteUUID) // check if its the same remote (zip)
+            continue;
+        transform.rotation.y = e->rotation;
     }
+}
 } // namespace hs::system

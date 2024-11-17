@@ -9,15 +9,12 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace hs::event
-{
-    struct LockPlayerEvent : public gengine::Event
-    {
-        bool locked;
+namespace hs::event {
+struct LockPlayerEvent : public gengine::Event {
+    bool locked;
 
-        LockPlayerEvent(bool locked)
-            : locked(locked)
-        {
-        }
-    };
+    LockPlayerEvent(bool locked)
+        : locked(locked) {
+    }
+};
 } // namespace hs::event

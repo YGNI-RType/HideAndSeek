@@ -9,9 +9,6 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace hs::event
-{
-    struct ChangeCameraMode : public gengine::Event
-    {
-    };
+namespace hs::event {
+struct ChangeCameraMode : public gengine::Event {};
 } // namespace hs::event
