@@ -3,6 +3,8 @@ name: Compilation
 on:
   push:
     branches: ["dev", "devops"]
+    tags:
+      - '*'
   pull_request:
     branches: ["main", "dev"]
 
@@ -10,7 +12,7 @@ jobs:
   build_rtype:
     runs-on: ${{ matrix.os }}
     env:
-      IS_RELEASE: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/devops' }}
+      IS_RELEASE: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/devops' || startsWith(github.ref, 'refs/tags/') }}
 
     strategy:
       #TODO Consider changing this to true when your workflow is stable.
@@ -113,7 +115,7 @@ jobs:
           path: |
             ${{ steps.strings.outputs.build-output-dir }}/*.tar.gz
             ${{ steps.strings.outputs.build-output-dir }}/*.exe
-            ${{ steps.strings.outputs.build-output-dir }}/*.Bundle
+            ${{ steps.strings.outputs.build-output-dir }}/*.dmg
 
         # the cache is mainly for cmake, and the timestamps don't match anyway. maybe next time we'll use another cache handler
       - name: Clean the cmake build directory Windows
@@ -129,7 +131,7 @@ jobs:
         run: |
           cmake --build ${{ steps.strings.outputs.build-output-dir }} --target clean
           find build/.vcpkg -mindepth 1 -maxdepth 1 ! -name 'downloads' ! -name 'installed' ! -name 'scripts' ! -name 'triplets' -exec rm -rf {} +
-          rm -rf build/*.tar.gz build/*.Bundle build/_CPack_Packages
+          rm -rf build/*.tar.gz build/*.dmg build/_CPack_Packages
 
   cleanup:
     runs-on: ubuntu-latest
@@ -164,34 +166,44 @@ jobs:
           clang-format -Werror -dry-run $files
 
   publish:
-    if: (github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'v')) || (github.ref == 'refs/heads/devops')
+    if: (github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'v')) || (github.ref == 'refs/heads/devops') || startsWith(github.ref, 'refs/tags/')
     needs: build_rtype
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download all release artifacts for Windows
+        uses: actions/download-artifact@v4
         with:
-          tag_name: ${{ github.event.head_commit.message }}
-          release_name: Release ${{ github.event.head_commit.message }}
-          draft: false
-          prerelease: false
+          name: windows-latest-artifacts
+          path: artifacts/windows.zip
 
-      - name: Download all release artifacts
-        uses: actions/download-artifact@v3
+      - name: Download all release artifacts for macOS
+        uses: actions/download-artifact@v4
         with:
-          name: release
-          path: artifacts/
+          name: macos-latest-artifacts
+          path: artifacts/macos.zip
+
+      - name: Download all release artifacts for Linux
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-latest-artifacts
+          path: artifacts/linux.zip
+
+      - name: Unzip Artifacts
+        run: |
+          unzip artifacts/windows.zip -d artifacts/
+          unzip artifacts/macos.zip -d artifacts/
+          unzip artifacts/linux.zip -d artifacts/
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: artifacts/*
+          file:
+            artifacts/*.exe
+            artifacts/*.dmg
+            artifacts/*.tar.gz
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
