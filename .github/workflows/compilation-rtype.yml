@@ -89,16 +89,17 @@ jobs:
           -DVCPKG_SHOULD_NOT_UPDATE=TRUE
           -S ${{ github.workspace }}
 
-      - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel 8
+      - name: Build Make
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -- -j
+
+      - name: Build MSVC
+        if: matrix.os == 'windows-latest'
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -- /m
 
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: ctest --build-config ${{ matrix.build_type }}
-
-      - name: Install NSIS on Windows
-        if: ((github.ref == 'refs/heads/devops') || startsWith(github.ref, 'refs/tags/')) && (matrix.os == 'windows-latest')
-        run: choco install nsis -y
 
       - name: Build with CPack
         if: (github.ref == 'refs/heads/devops') || startsWith(github.ref, 'refs/tags/')
