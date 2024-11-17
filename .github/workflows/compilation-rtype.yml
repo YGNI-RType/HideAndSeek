@@ -89,13 +89,8 @@ jobs:
           -DVCPKG_SHOULD_NOT_UPDATE=TRUE
           -S ${{ github.workspace }}
 
-      - name: Build Make
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -- -j
-
-      - name: Build MSVC
-        if: matrix.os == 'windows-latest'
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -- /m
+      - name: Build
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel 8
 
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
