@@ -9,6 +9,8 @@ on:
 jobs:
   build_rtype:
     runs-on: ${{ matrix.os }}
+    env:
+      IS_RELEASE: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/devops' }}
 
     strategy:
       #TODO Consider changing this to true when your workflow is stable.
@@ -64,7 +66,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: build
-          key: ${{ runner.os }}-build-${{ hashFiles('CMakeLists.txt', 'cmake/**', 'overlay-ports/gengine/portfile.cmake') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('CMakeLists.txt', 'overlay-ports/gengine/portfile.cmake') }}
           restore-keys: |
             ${{ runner.os }}-build-
 
@@ -89,25 +91,45 @@ jobs:
           -S ${{ github.workspace }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel 8
 
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: ctest --build-config ${{ matrix.build_type }}
 
-        # the cache is mainly for cmake, and the timestamps don't match anyway. maybe next time we'll use another cache handler
+      - name: Install NSIS on Windows
+        if: (matrix.os == 'windows-latest') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/devops')
+        run: choco install nsis -y
 
+      - name: Build with CPack
+        if: ${{ env.IS_RELEASE }}
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target package
+
+      - name: Upload CPack artifacts
+        if: ${{ env.IS_RELEASE }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-artifacts
+          path: |
+            ${{ steps.strings.outputs.build-output-dir }}/*.tar.gz
+            ${{ steps.strings.outputs.build-output-dir }}/*.exe
+            ${{ steps.strings.outputs.build-output-dir }}/*.Bundle
+
+        # the cache is mainly for cmake, and the timestamps don't match anyway. maybe next time we'll use another cache handler
       - name: Clean the cmake build directory Windows
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-latest' && steps.cache-build.outputs.cache-hit != 'true'
         run: |
           cmake --build ${{ steps.strings.outputs.build-output-dir }} --target clean
           Get-ChildItem -Path build/vcpkg/* -Exclude 'downloads', 'installed', 'scripts', 'triplets' | Remove-Item -Recurse -Force
+          Remove-Item -Recurse -Force build/*.exe
+          Remove-Item -Recurse -Force build/_CPack_Packages
 
       - name: Clean the cmake build directory UNIX like
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' && steps.cache-build.outputs.cache-hit != 'true'
         run: |
           cmake --build ${{ steps.strings.outputs.build-output-dir }} --target clean
           find build/.vcpkg -mindepth 1 -maxdepth 1 ! -name 'downloads' ! -name 'installed' ! -name 'scripts' ! -name 'triplets' -exec rm -rf {} +
+          rm -rf build/*.tar.gz build/*.Bundle build/_CPack_Packages
 
   cleanup:
     runs-on: ubuntu-latest
@@ -140,3 +162,36 @@ jobs:
           clang-format --version
           files=$(find . -name "*.hpp" -o -name "*.cpp" -o -name "*.inl")
           clang-format -Werror -dry-run $files
+
+  publish:
+    if: (github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'v')) || (github.ref == 'refs/heads/devops')
+    needs: build_rtype
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.head_commit.message }}
+          release_name: Release ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
+
+      - name: Download all release artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: release
+          path: artifacts/
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: artifacts/*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
