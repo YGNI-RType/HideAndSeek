@@ -9,7 +9,7 @@ on:
     branches: ["main", "dev"]
 
 jobs:
-  build_rtype:
+  build_hideandseek:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -117,7 +117,9 @@ jobs:
           cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target clean
           Get-ChildItem -Path build/vcpkg/* -Exclude 'downloads', 'installed', 'scripts', 'triplets' | Remove-Item -Recurse -Force
           Remove-Item -Recurse -Force build/*.exe
-          Remove-Item -Recurse -Force build/_CPack_Packages
+          if (Test-Path build/_CPack_Packages) {
+            Remove-Item -Recurse -Force build/_CPack_Packages
+          }
           Remove-Item -Recurse -Force build/Release/*.dll
 
       - name: Clean the cmake build directory UNIX like
@@ -161,7 +163,7 @@ jobs:
 
   publish:
     if: (github.ref == 'refs/heads/devops') || startsWith(github.ref, 'refs/tags/')
-    needs: [build_rtype, beautify]
+    needs: [build_hideandseek, beautify]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
