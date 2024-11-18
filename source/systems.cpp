@@ -30,6 +30,7 @@
 
 #include "GEngine/interface/network/systems/ClientEventPublisher.hpp"
 #include "GEngine/interface/network/systems/ClientServer.hpp"
+#include "GEngine/interface/network/systems/CommandManager.hpp"
 #include "GEngine/interface/network/systems/ServerEventReceiver.hpp"
 
 #include "GEngine/interface/events/RemoteLocal.hpp"
@@ -117,6 +118,8 @@ void GEngineDeclareSystems(Registry *r) {
     r->registerSystem<V>();
 
     r->registerSystem<gengine::system::CLI>();
+    r->registerSystem<gengine::interface::network::system::CLCommandManager>();
+    r->registerSystem<gengine::interface::network::system::SVCommandManager>("../config/net.json");
 
     // Audio
     r->registerSystem<gengine::system::driver::output::AudioManagerLocal>("../assets/sounds", "../assets/musics");

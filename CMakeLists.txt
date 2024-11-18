@@ -50,6 +50,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release" AND NOT DEFINED CMAKE_GENGINE_PATH)
     endif()
 
     install(DIRECTORY assets/ DESTINATION assets)
+    install(DIRECTORY config/ DESTINATION config)
 
     include(cmake/pack.cmake)
 endif()
