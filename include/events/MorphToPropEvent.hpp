@@ -9,9 +9,6 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace hs::event
-{
-    struct MorphToPropEvent : public gengine::Event
-    {
-    };
+namespace hs::event {
+struct MorphToPropEvent : public gengine::Event {};
 } // namespace hs::event

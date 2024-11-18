@@ -19,15 +19,13 @@
 
 #include "events/ChangePlayerModelEvent.hpp"
 
-namespace hs::system
-{
-    class ChangePlayerModel : public gengine::System<ChangePlayerModel, gengine::interface::component::RemoteLocal,
-                                                     geg::component::io::Animation, geg::component::Transform3D,
-                                                     gengine::component::driver::output::Model, component::Player>
-    {
-    public:
-        void init(void) override;
+namespace hs::system {
+class ChangePlayerModel : public gengine::System<ChangePlayerModel, gengine::interface::component::RemoteLocal,
+                                                 geg::component::io::Animation, geg::component::Transform3D,
+                                                 gengine::component::driver::output::Model, component::Player> {
+public:
+    void init(void) override;
 
-        void changePlayerModel(gengine::interface::event::SharedEvent<event::ChangePlayerModelEvent> &e);
-    };
+    void changePlayerModel(gengine::interface::event::SharedEvent<event::ChangePlayerModelEvent> &e);
+};
 } // namespace hs::system

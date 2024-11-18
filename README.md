@@ -63,4 +63,5 @@ Enjoy hiding, seeking, and the thrill of discovery in Prophunt! Happy hunting an
 ## Credits
 
 - **Developers**: Arcod7, Popochounet
-- **Assets**: Thomas (pastèque, voiture et chaise)
+- **Assets**: Thomas (scripts to export 3D models from Source Engine)
+- **CI/CD**: Arcod7, Thomas

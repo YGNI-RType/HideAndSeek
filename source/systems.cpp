@@ -30,6 +30,7 @@
 
 #include "GEngine/interface/network/systems/ClientEventPublisher.hpp"
 #include "GEngine/interface/network/systems/ClientServer.hpp"
+#include "GEngine/interface/network/systems/CommandManager.hpp"
 #include "GEngine/interface/network/systems/ServerEventReceiver.hpp"
 
 #include "GEngine/interface/events/RemoteLocal.hpp"
@@ -48,16 +49,13 @@
 
 #include "GEngine/libdev/System.hpp"
 
-struct V : public gengine::System<V>, public gengine::LocalSystem
-{
-    void init(void) override
-    {
+struct V : public gengine::System<V>, public gengine::LocalSystem {
+    void init(void) override {
         // publishEvent(gengine::system::event::driver::input::StartVoIP());
         subscribeToEvent<gengine::system::event::CLINewInput>(&V::onCLi);
     }
 
-    void onCLi(gengine::system::event::CLINewInput &e)
-    {
+    void onCLi(gengine::system::event::CLINewInput &e) {
         if (!e.prompt.size())
             return;
         if (!e.prompt[0].compare("voip-start"))
@@ -67,9 +65,8 @@ struct V : public gengine::System<V>, public gengine::LocalSystem
     }
 };
 
-void GEngineDeclareSystems(Registry *r)
-{
-    r->registerSystem<gengine::system::driver::output::RenderWindow>(WINDOW_WIDTH, WINDOW_TOTAL_HEIGHT, "R-Type");
+void GEngineDeclareSystems(Registry *r) {
+    r->registerSystem<gengine::system::driver::output::RenderWindow>(WINDOW_WIDTH, WINDOW_TOTAL_HEIGHT, "HideAndSeek");
     r->registerSystem<gengine::system::driver::output::Draw>(BLACK);
     r->registerSystem<gengine::system::driver::output::DrawSprite>();
     r->registerSystem<gengine::system::driver::output::DrawModel>();
@@ -121,6 +118,8 @@ void GEngineDeclareSystems(Registry *r)
     r->registerSystem<V>();
 
     r->registerSystem<gengine::system::CLI>();
+    r->registerSystem<gengine::interface::network::system::CLCommandManager>();
+    r->registerSystem<gengine::interface::network::system::SVCommandManager>("../config/net.json");
 
     // Audio
     r->registerSystem<gengine::system::driver::output::AudioManagerLocal>("../assets/sounds", "../assets/musics");

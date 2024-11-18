@@ -9,15 +9,12 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace hs::event
-{
-    struct ResetPlayerRotationEvent : public gengine::Event
-    {
-        float rotation;
+namespace hs::event {
+struct ResetPlayerRotationEvent : public gengine::Event {
+    float rotation;
 
-        ResetPlayerRotationEvent(float rotation)
-            : rotation(rotation)
-        {
-        }
-    };
+    ResetPlayerRotationEvent(float rotation)
+        : rotation(rotation) {
+    }
+};
 } // namespace hs::event

@@ -9,15 +9,12 @@
 
 #include "GEngine/libdev/System.hpp"
 
-namespace hs::event
-{
-    struct Crouch : public gengine::Event
-    {
-        bool crouching;
+namespace hs::event {
+struct Crouch : public gengine::Event {
+    bool crouching;
 
-        Crouch(bool crouching = false)
-            : crouching(crouching)
-        {
-        }
-    };
+    Crouch(bool crouching = false)
+        : crouching(crouching) {
+    }
+};
 } // namespace hs::event
