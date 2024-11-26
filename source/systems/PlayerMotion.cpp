@@ -62,9 +62,11 @@ void PlayerMotion::movePlayer(gengine::interface::event::SharedEvent<event::Move
 
         if (e->state != event::Movement::STANDING && anims.contains(entity)) {
             anims.get(entity).m_mode = gengine::component::driver::output::AnimationTrack::PlaybackMode::Forward;
-            if (player.sprinting && anims.get(entity).trackName == "player.json/walk" || anims.get(entity).trackName == "player.json/idle")
+            if (player.sprinting && anims.get(entity).trackName == "player.json/walk" ||
+                anims.get(entity).trackName == "player.json/idle")
                 setComponent(entity, geg::component::io::Animation("player.json/run", 0.03f));
-            if (!player.sprinting && anims.get(entity).trackName == "player.json/run" || anims.get(entity).trackName == "player.json/idle")
+            if (!player.sprinting && anims.get(entity).trackName == "player.json/run" ||
+                anims.get(entity).trackName == "player.json/idle")
                 setComponent(entity, geg::component::io::Animation("player.json/walk", 0.03f));
         }
 

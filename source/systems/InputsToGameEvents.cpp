@@ -201,8 +201,7 @@ void InputsToGameEvents::setPlayerModelBeer(geg::event::io::KeyTwoEvent &e) {
 void InputsToGameEvents::setPlayerModelChicken(geg::event::io::KeyThreeEvent &e) {
     float scale = 1.5;
     if (e.state == geg::event::io::InputState::PRESSED)
-        publishEvent(
-            event::ChangePlayerModelEvent("chicken/", "chicken.json/walk", 0.04f, {scale, scale, scale}));
+        publishEvent(event::ChangePlayerModelEvent("chicken/", "chicken.json/walk", 0.04f, {scale, scale, scale}));
 }
 
 void InputsToGameEvents::setPlayerModelLamp(geg::event::io::KeyFourEvent &e) {
