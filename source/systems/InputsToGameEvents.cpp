@@ -29,7 +29,7 @@ void InputsToGameEvents::init(void) {
 
     subscribeToEvent<geg::event::io::KeyOneEvent>(&InputsToGameEvents::setPlayerModelCoraline);
     subscribeToEvent<geg::event::io::KeyTwoEvent>(&InputsToGameEvents::setPlayerModelBeer);
-    // subscribeToEvent<geg::event::io::KeyThreeEvent>(&InputsToGameEvents::setPlayerModelChair);
+    subscribeToEvent<geg::event::io::KeyThreeEvent>(&InputsToGameEvents::setPlayerModelChicken);
     // subscribeToEvent<geg::event::io::KeyFourEvent>(&InputsToGameEvents::setPlayerModelLamp);
     // subscribeToEvent<geg::event::io::KeyFiveEvent>(&InputsToGameEvents::setPlayerModelStick);
 }
@@ -198,9 +198,11 @@ void InputsToGameEvents::setPlayerModelBeer(geg::event::io::KeyTwoEvent &e) {
         publishEvent(event::ChangePlayerModelEvent("props/beer_bottle.glb", {scale, scale, scale}));
 }
 
-void InputsToGameEvents::setPlayerModelChair(geg::event::io::KeyThreeEvent &e) {
+void InputsToGameEvents::setPlayerModelChicken(geg::event::io::KeyThreeEvent &e) {
+    float scale = 1.5;
     if (e.state == geg::event::io::InputState::PRESSED)
-        publishEvent(event::ChangePlayerModelEvent("props/wooden_cabinet.glb"));
+        publishEvent(
+            event::ChangePlayerModelEvent("chicken/", "chicken.json/walk", 0.04f, {scale, scale, scale}));
 }
 
 void InputsToGameEvents::setPlayerModelLamp(geg::event::io::KeyFourEvent &e) {

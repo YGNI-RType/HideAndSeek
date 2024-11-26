@@ -108,7 +108,7 @@ void system::Start::onNewRemoteLocal(gengine::interface::event::NewRemoteLocal &
                                                 {0, 0, 0}), // coraline_old {-90, 0, 180}
                 gengine::component::Velocity3D(0, 0, 0), gengine::component::driver::output::Drawable(2),
                 gengine::component::driver::output::Model("player/", WHITE, true),
-                geg::component::io::Animation("player.json/walk", 0.03f),
+                geg::component::io::Animation("player.json/idle", 0.03f),
                 gengine::interface::component::RemoteLocal(e.uuid), geg::component::network::NetSend());
     m_nbPlayer++;
 }
