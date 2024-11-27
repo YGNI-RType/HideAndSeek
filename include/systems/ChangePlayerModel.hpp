@@ -22,7 +22,8 @@
 namespace hs::system {
 class ChangePlayerModel : public gengine::System<ChangePlayerModel, gengine::interface::component::RemoteLocal,
                                                  geg::component::io::Animation, geg::component::Transform3D,
-                                                 gengine::component::driver::output::Model, component::Player>, public gengine::RemoteSystem {
+                                                 gengine::component::driver::output::Model, component::Player>,
+                          public gengine::RemoteSystem {
 public:
     void init(void) override;
 
