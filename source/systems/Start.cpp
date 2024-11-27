@@ -98,7 +98,7 @@ void system::Start::onStartEngine(gengine::system::event::StartEngine &e) {
                 gengine::component::driver::output::Drawable(2),
                 gengine::component::driver::output::Model("props/chaise.glb"), geg::component::network::NetSend());
 
-    publishEvent(gengine::system::event::driver::output::Music("ambiance.mp3"));
+    publishEvent(gengine::system::event::driver::output::Music("ambiance.mp3", 0.05));
 }
 
 void system::Start::onNewRemoteLocal(gengine::interface::event::NewRemoteLocal &e) {
