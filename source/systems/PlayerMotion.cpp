@@ -61,9 +61,12 @@ void PlayerMotion::movePlayer(gengine::interface::event::SharedEvent<event::Move
         gengine::Vect3 right = {sin(yawRadians), 0, cos(yawRadians)};
 
         if (e->state != event::Movement::STANDING && anims.contains(entity)) {
-            if (player.sprinting && anims.get(entity).trackName != "player.json/run")
+            anims.get(entity).m_mode = gengine::component::driver::output::AnimationTrack::PlaybackMode::Forward;
+            if (player.sprinting && anims.get(entity).trackName == "player.json/walk" ||
+                anims.get(entity).trackName == "player.json/idle")
                 setComponent(entity, geg::component::io::Animation("player.json/run", 0.03f));
-            if (!player.sprinting && anims.get(entity).trackName != "player.json/walk")
+            if (!player.sprinting && anims.get(entity).trackName == "player.json/run" ||
+                anims.get(entity).trackName == "player.json/idle")
                 setComponent(entity, geg::component::io::Animation("player.json/walk", 0.03f));
         }
 
@@ -112,8 +115,13 @@ void PlayerMotion::movePlayer(gengine::interface::event::SharedEvent<event::Move
         case event::Movement::STANDING: {
             velocity.x = 0;
             velocity.z = 0;
-            if (anims.contains(entity) && anims.get(entity).trackName != "player.json/idle")
-                setComponent(entity, geg::component::io::Animation("player.json/idle", 0.03f));
+            if (anims.contains(entity)) {
+                if (anims.get(entity).trackName == "player.json/walk" ||
+                    anims.get(entity).trackName == "player.json/run")
+                    setComponent(entity, geg::component::io::Animation("player.json/idle", 0.03f));
+                else if (anims.get(entity).trackName == "chicken.json/walk")
+                    anims.get(entity).m_mode = gengine::component::driver::output::AnimationTrack::PlaybackMode::None;
+            }
             break;
         }
         }

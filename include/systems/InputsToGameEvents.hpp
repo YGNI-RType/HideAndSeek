@@ -47,7 +47,7 @@ public:
 
     void setPlayerModelCoraline(geg::event::io::KeyOneEvent &e);
     void setPlayerModelBeer(geg::event::io::KeyTwoEvent &e);
-    void setPlayerModelChair(geg::event::io::KeyThreeEvent &e);
+    void setPlayerModelChicken(geg::event::io::KeyThreeEvent &e);
     void setPlayerModelLamp(geg::event::io::KeyFourEvent &e);
     void setPlayerModelStick(geg::event::io::KeyFiveEvent &e);
     void setPlayerModelTv(geg::event::io::KeySixEvent &e);
