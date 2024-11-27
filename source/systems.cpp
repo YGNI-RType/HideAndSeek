@@ -32,6 +32,7 @@
 #include "GEngine/interface/network/systems/ClientServer.hpp"
 #include "GEngine/interface/network/systems/CommandManager.hpp"
 #include "GEngine/interface/network/systems/ServerEventReceiver.hpp"
+#include "GEngine/interface/network/systems/RecordManager.hpp"
 
 #include "GEngine/interface/events/RemoteLocal.hpp"
 #include "GEngine/interface/systems/RemoteLocal.hpp"
@@ -62,6 +63,25 @@ struct V : public gengine::System<V>, public gengine::LocalSystem {
             publishEvent(gengine::system::event::driver::input::StartVoIP());
         if (!e.prompt[0].compare("voip-stop"))
             publishEvent(gengine::system::event::driver::input::EndVoIP());
+    }
+};
+
+struct StartReplay : public gengine::OnEventSystem<StartReplay, geg::event::io::KeyPEvent>, public gengine::LocalSystem {
+    void onEvent(geg::event::io::KeyPEvent &e) override {
+        if (!e.state == geg::event::io::InputState::PRESSED)
+            publishEvent(gengine::interface::network::event::ToggleRecord());
+    }
+};
+
+struct WatcherReplay : public gengine::OnEventSystem<StartReplay, gengine::system::event::StartEngine, gengine::system::driver::output::DrawModel>, public gengine::LocalSystem {
+    void onEvent(gengine::system::event::StartEngine &e) override {
+        auto &draw = getSystem<gengine::system::driver::output::DrawModel>();
+        for (auto p = e.params.begin(); p != e.params.end(); p++) {
+        if (*p == "--replay" && (p + 1) != e.params.end()) {
+            draw.camera.position = {7.7, 2.47, 5.4};
+            draw.camera.target = {7.0, 2.13, 5.13};
+        }
+    }
     }
 };
 
@@ -116,6 +136,9 @@ void GEngineDeclareSystems(Registry *r) {
     r->registerSystem<gengine::interface::network::system::ConnectAtStart>("127.0.0.1", 4242);
 
     r->registerSystem<V>();
+    r->registerSystem<StartReplay>();
+    r->registerSystem<WatcherReplay>();
+    r->registerSystem<gengine::interface::network::system::RecordManager>();
 
     r->registerSystem<gengine::system::CLI>();
     r->registerSystem<gengine::interface::network::system::CLCommandManager>();
