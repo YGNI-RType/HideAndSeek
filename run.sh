@@ -5,7 +5,7 @@ cd build
 touch .gitkeep
 
 cmake .. -DCMAKE_TOOLCHAIN_FILE=./cmake/define-compilers.cmake -DCMAKE_BUILD_TYPE=Release || { echo "CMake configuration failed"; exit 1; }
-cmake --build . --parallel 8 || { echo "CMake build failed"; exit 1; }
+cmake --build . || { echo "CMake build failed"; exit 1; }
 
 echo "Running server..."
 mkfifo pipe
@@ -26,10 +26,10 @@ cleanup() {
 # Trap CTRL + C (SIGINT)
 trap cleanup SIGINT
 
-sleep 1
+sleep 5
 
 echo "Running client..."
-./hs_client --ip 127.0.0.1
+./hs_client
 
 kill $SERVER_PID 2>/dev/null
 kill $TEE_PID 2>/dev/null
