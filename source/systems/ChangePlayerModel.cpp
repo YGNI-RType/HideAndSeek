@@ -29,7 +29,7 @@ void ChangePlayerModel::changePlayerModel(gengine::interface::event::SharedEvent
         if (transforms.contains(entity)) {
             auto &transform = transforms.get(entity);
             transform.scale = e->transform.scale;
-            transform.rotation = e->transform.rotation;
+            // transform.rotation = e->transform.rotation;
         }
         if (e->isAnimated) {
             setComponent(entity, geg::component::io::Animation(e->animPath, e->frameDuration));

@@ -43,7 +43,6 @@ void CameraRotation::rotateCamera(event::Rotation &e) {
 }
 
 void CameraRotation::onMovement(gengine::interface::event::SharedEvent<event::Movement> &e) {
-    auto &draw = getSystem<gengine::system::driver::output::DrawModel>();
     auto &transforms = getComponents<geg::component::Transform3D>();
     auto &players = getComponents<component::Player>();
     auto &remotes = getComponents<gengine::interface::component::RemoteLocal>();
